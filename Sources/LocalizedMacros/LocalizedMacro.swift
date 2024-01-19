@@ -13,14 +13,14 @@ public struct LocalizeMacro: ExpressionMacro {
     }
 
     return """
-    #if SWIFT_PACKAGE
-    String(localized: \(argument), bundle: .module)
-    #else
     {
+      #if SWIFT_PACKAGE
+      return String(localized: \(argument), bundle: .module)
+      #else
       final class BundleToken {}
       return String(localized: \(argument), bundle: Bundle(for: BundleToken.self))
+      #endif
     }()
-    #endif
     """
   }
 }
