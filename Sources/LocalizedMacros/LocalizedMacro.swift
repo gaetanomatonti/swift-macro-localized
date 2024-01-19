@@ -12,7 +12,16 @@ public struct LocalizeMacro: ExpressionMacro {
       fatalError("compiler bug: the macro does not have any arguments")
     }
 
-    return "String(localized: \(argument), bundle: .module)"
+    return """
+    {
+      #if SWIFT_PACKAGE
+      return String(localized: \(argument), bundle: .module)
+      #else
+      final class BundleToken {}
+      return String(localized: \(argument), bundle: Bundle(for: BundleToken.self))
+      #endif
+    }()
+    """
   }
 }
 
