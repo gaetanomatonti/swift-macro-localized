@@ -31,10 +31,3 @@ struct LocalizedPlugin: CompilerPlugin {
     LocalizeMacro.self,
   ]
 }
-
-import Foundation
-
-let string = {
-  final class BundleToken {}
-  return Bundle(for: BundleToken.self)
-}()
