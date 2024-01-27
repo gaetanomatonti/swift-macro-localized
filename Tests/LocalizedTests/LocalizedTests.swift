@@ -19,7 +19,14 @@ final class LocalizedTests: XCTestCase {
       #Localized("Hello World")
       """,
       expandedSource: """
-      String(localized: "Hello World", bundle: .module)
+          {
+            #if SWIFT_PACKAGE
+            return String(localized: "Hello World", bundle: .module)
+            #else
+            final class BundleToken {}
+            return String(localized: "Hello World", bundle: Bundle(for: BundleToken.self))
+            #endif
+          }()
       """,
       macros: testMacros
     )
